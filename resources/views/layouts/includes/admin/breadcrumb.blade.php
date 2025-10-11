@@ -4,11 +4,11 @@
             @foreach ($breadcrumbs as $item)
                 <li class="flex items-center">
                     @isset($item['route'])
-                        <a href="{{ $item['route'] }}" class="hover:text-blue-600">
+                        <a href="{{ $item['route'] }}" class="text-black hover:text-blue-600 transition-colors duration-200 font-medium">
                             {{ $item['name'] }}
                         </a>
                     @else
-                        <span class="text-slate-700 text-lg font-bold">
+                        <span class="text-black font-medium">
                             {{ $item['name'] }}
                         </span>
                     @endisset

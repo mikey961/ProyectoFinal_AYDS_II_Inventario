@@ -10,10 +10,17 @@
             'header' => 'Principal',
         ],
         [
-            'name' => 'Categorías',
-            'icon' => 'fa-solid fa-list',
-            'route' => route('admin.categories.index'),
-            'active' => request()->routeIs('admin.categories.*')
+            'name' => 'Inventario',
+            'icon' => 'fa-solid fa-boxes-stacked',
+            'active' => false,
+            'submenu' => [
+                [
+                    'name' => 'Categorías',
+                    'icon' => 'fa-solid fa-list',
+                    'route' => route('admin.categories.index'),
+                    'active' => request()->routeIs('admin.categories.*'),
+                ]
+            ]
         ]
     ];
 @endphp
@@ -50,8 +57,13 @@
                                 @foreach ($link['submenu'] as $item)
                                     <li>
                                         <a href="{{ $item['route'] }}"
-                                            class="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-blue-500 {{ $item['active'] ? 'bg-blue-500' : '' }}">
-                                            {{ $item['name'] }}
+                                            class="flex items-center gap-2 w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-blue-500 {{ $item['active'] ? 'bg-blue-500' : '' }}">
+                                            <span class="w-6 h-6 inline-flex justify-center items-center text-white">
+                                                <i class="{{ $item['icon'] }}"></i>
+                                            </span>
+                                            <div class="text-left">
+                                                {{ $item['name'] }}
+                                            </div>
                                         </a>
                                     </li>
                                 @endforeach
