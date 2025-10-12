@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PuchaseOrder extends Model
+class PurchaseOrder extends Model
 {
     protected $fillable = [
         'voucher_type',
