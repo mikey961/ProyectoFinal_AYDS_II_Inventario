@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,6 @@ Route::resource('products', ProductController::class)->except(['show']);
 //Rutas para Dropzone
 Route::post('products/{product}/dropzone', [ProductController::class, 'dropzone'])->name('products.dropzone');
 Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('image.destroy');
+
+//Rutas Clientes
+Route::resource('customers', CustomerController::class)->except('show');

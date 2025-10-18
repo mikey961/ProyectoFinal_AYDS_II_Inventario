@@ -25,6 +25,12 @@
                     'icon' => 'fa-solid fa-box',
                     'route' => route('admin.products.index'),
                     'active' => request()->routeIs('admin.products.*')
+                ],
+                [
+                    'name' => 'Clientes',
+                    'icon' => 'fa-solid fa-users',
+                    'route' => route('admin.customers.index'),
+                    'active' => request()->routeIs('admin.customers.*')
                 ]
             ]
         ]
