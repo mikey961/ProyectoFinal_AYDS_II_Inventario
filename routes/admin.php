@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function(){
@@ -22,3 +23,6 @@ Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('imag
 
 //Rutas Clientes
 Route::resource('customers', CustomerController::class)->except('show');
+
+//Rutas de Proveedores
+Route::resource('suppliers', SupplierController::class)->except('show');

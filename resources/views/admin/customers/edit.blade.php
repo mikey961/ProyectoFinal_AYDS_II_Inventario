@@ -58,8 +58,10 @@ title="Editar cliente"
                 label="Teléfono" 
                 name="phone" 
                 placeholder="Numero de teléfono del cliente"
-                type="number"
+                type="text"
                 value="{{ old('phone', $customer->phone) }}"
+                pattern="[\d\+\-\(\)\s]+"
+                inputmode="tel"
             />
             <div class="flex justify-end">
                 <x-button type="submit">

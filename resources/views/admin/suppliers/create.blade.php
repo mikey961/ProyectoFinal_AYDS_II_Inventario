@@ -1,19 +1,19 @@
 <x-admin-layout 
-title="Nueva cliente"
+title="Nueva proveedor"
 :breadcrumbs="[
     [
         'name' => 'Inventario'
     ],
     [
-        'name' => 'Clientes',
-        'route' => route('admin.customers.index')
+        'name' => 'Proveedores',
+        'route' => route('admin.suppliers.index')
     ],
     [
-        'name' => 'Nuevo cliente'
+        'name' => 'Nuevo proveedor'
     ]
 ]">
     <x-wire-card>
-        <form action="{{ route('admin.customers.store') }}" 
+        <form action="{{ route('admin.suppliers.store') }}" 
             method="POST" 
             class="space-y-4">
             @csrf
@@ -37,26 +37,26 @@ title="Nueva cliente"
             <x-wire-input 
                 label="Nombre" 
                 name="name" 
-                placeholder="Nombre del cliente"
+                placeholder="Nombre del proveedor"
                 value="{{ old('name') }}"
             />
             <x-wire-input 
                 label="Dirección" 
                 name="address" 
-                placeholder="Dirección del cliente"
+                placeholder="Dirección del proveedor"
                 value="{{ old('address') }}"
             />
             <x-wire-input 
                 label="Correo" 
                 name="email" 
-                placeholder="Correo electrónico del cliente"
+                placeholder="Correo electrónico del proveedor"
                 type="email"
                 value="{{ old('email') }}"
             />
             <x-wire-input 
                 label="Teléfono" 
                 name="phone" 
-                placeholder="Numero de teléfono del cliente"
+                placeholder="Numero de teléfono del proveedor"
                 type="text"
                 value="{{ old('phone') }}"
                 pattern="[\d\+\-\(\)\s]+"

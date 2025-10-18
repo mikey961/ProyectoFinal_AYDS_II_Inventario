@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'identity_id',
         'document_number',
@@ -22,7 +25,7 @@ class Supplier extends Model
 
     //Relación uno a muchos
     public function purchase_Orders(){
-        return $this->hasMany(PuchaseOrder::class);
+        return $this->hasMany(PurchaseOrder::class);
     }
 
     //Relación uno a muchos
