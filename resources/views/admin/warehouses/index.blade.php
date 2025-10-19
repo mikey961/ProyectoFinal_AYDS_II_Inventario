@@ -1,8 +1,11 @@
 <x-admin-layout 
-title="Clientes"
+title="Almacenes"
 :breadcrumbs="[
     [
-        'name' => 'Clientes'
+        'name' => 'Inventario'
+    ],
+    [
+        'name' => 'Almacenes'
     ]
 
 ]">
@@ -28,15 +31,15 @@ title="Clientes"
     <x-slot name="action">
         <x-wire-button
         class="font-semibold" 
-        href="{{ route('admin.customers.create') }}"
+        href="{{ route('admin.warehouses.create') }}"
         amber 
         rounded>
-            Nuevo Cliente
+            Nuevo Almacen
         </x-wire-button>
     </x-slot>
     
     <div class="mt-4">
-        @livewire('admin.datatables.customer-table')
+        @livewire('admin.datatables.warehouse-table')
     </div> 
     
     @push('js')

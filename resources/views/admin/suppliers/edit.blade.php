@@ -2,10 +2,10 @@
 title="Editar proveedor"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
+        'name' => 'Compras'
     ],
     [
-        'name' => 'Clientes',
+        'name' => 'Proveedores',
         'route' => route('admin.suppliers.index')
     ],
     [

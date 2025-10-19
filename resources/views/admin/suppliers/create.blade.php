@@ -2,7 +2,7 @@
 title="Nueva proveedor"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
+        'name' => 'Compras'
     ],
     [
         'name' => 'Proveedores',

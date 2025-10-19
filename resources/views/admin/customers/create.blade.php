@@ -2,9 +2,6 @@
 title="Nueva cliente"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
-    ],
-    [
         'name' => 'Clientes',
         'route' => route('admin.customers.index')
     ],

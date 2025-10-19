@@ -13,6 +13,7 @@
             'name' => 'Inventario',
             'icon' => 'fa-solid fa-boxes-stacked',
             'active' => false,
+            'submenu_id' => 'dropdown-invetory',
             'submenu' => [
                 [
                     'name' => 'Categorías',
@@ -27,18 +28,53 @@
                     'active' => request()->routeIs('admin.products.*')
                 ],
                 [
-                    'name' => 'Clientes',
-                    'icon' => 'fa-solid fa-users',
-                    'route' => route('admin.customers.index'),
-                    'active' => request()->routeIs('admin.customers.*')
+                    'name' => 'Almacenes',
+                    'icon' => 'fa-solid fa-warehouse',
+                    'route' => route('admin.warehouses.index'),
+                    'active' => request()->routeIs('admin.warehouses.*')
                 ]
             ]
         ],
         [
-            'name' => 'Proveedores',
-            'icon' => 'fa-solid fa-truck',
-            'route' => route('admin.suppliers.index'),
-            'active' => request()->routeIs('admin.suppliers.*')
+            'name' => 'Compras',
+            'icon' => 'fa-solid fa-shop',
+            'active' => false,
+            'submenu_id' => 'dropdown-purchase',
+            'submenu' => [
+                [
+                    'name' => 'Proveedores',
+                    'icon' => 'fa-solid fa-truck',
+                    'route' => route('admin.suppliers.index'),
+                    'active' => request()->routeIs('admin.suppliers.*')
+                ]
+            ]
+        ],
+        [
+            'name' => 'Ventas',
+            'icon' => 'fa-solid fa-basket-shopping', 
+            'active' => false,
+            'submenu_id' => 'dropdown-sales',
+            'submenu' => [
+
+            ]
+        ],
+        [
+            'name' => 'Movimientos',
+            'icon' => 'fa-solid fa-sync',
+            'active' => false,
+            'submenu_id' => 'dropdown-movements',
+            'submenu' => [
+
+            ]
+        ],
+        [
+            'header' => 'Configuraciones'
+        ],
+        [
+            'name' => 'Clientes',
+            'icon' => 'fa-solid fa-users',
+            'route' => route('admin.customers.index'),
+            'active' => request()->routeIs('admin.customers.*')
         ],
     ];
 @endphp
@@ -58,7 +94,8 @@
                         @isset($link['submenu'])
                             <button type="button"
                                 class="flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group hover:bg-blue-500"
-                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                aria-controls="{{ $link['submenu_id'] }}" 
+                                data-collapse-toggle="{{ $link['submenu_id'] }}">
                                 <span class="w-6 h-6 inline-flex justify-center items-center text-white">
                                     <i class="{{ $link['icon'] }}"></i>
                                 </span>
@@ -71,7 +108,7 @@
                                         d="m1 1 4 4 4-4" />
                                 </svg>
                             </button>
-                            <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                            <ul id="{{ $link['submenu_id'] }}" class="hidden py-2 space-y-2">
                                 @foreach ($link['submenu'] as $item)
                                     <li>
                                         <a href="{{ $item['route'] }}"

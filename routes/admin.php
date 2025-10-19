@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function(){
@@ -26,3 +27,6 @@ Route::resource('customers', CustomerController::class)->except('show');
 
 //Rutas de Proveedores
 Route::resource('suppliers', SupplierController::class)->except('show');
+
+//Rutas de Almacenes
+Route::resource('warehouses', WarehouseController::class)->except('show');
