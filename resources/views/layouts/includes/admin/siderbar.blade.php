@@ -12,8 +12,11 @@
         [
             'name' => 'Inventario',
             'icon' => 'fa-solid fa-boxes-stacked',
-            'active' => false,
-            'submenu_id' => 'dropdown-invetory',
+            'active' => request()->routeIs([
+                'admin.categories.*',
+                'admin.products.*',
+                'admin.warehouses.*'
+            ]),
             'submenu' => [
                 [
                     'name' => 'Categorías',
@@ -38,43 +41,108 @@
         [
             'name' => 'Compras',
             'icon' => 'fa-solid fa-shop',
-            'active' => false,
-            'submenu_id' => 'dropdown-purchase',
+            'active' => request()->routeIs([
+                'admin.suppliers.*'
+            ]),
             'submenu' => [
                 [
                     'name' => 'Proveedores',
                     'icon' => 'fa-solid fa-truck',
                     'route' => route('admin.suppliers.index'),
                     'active' => request()->routeIs('admin.suppliers.*')
+                ],
+                [
+                    'name' => 'Ordenes de compra',
+                    'icon' => 'fa-solid fa-boxes-packing',
+                    'route' => '',
+                    'active' => false
+                ],
+                [
+                    'name' => 'Compras',
+                    'icon' => 'fa-solid fa-cart-shopping',
+                    'route' => '',
+                    'active' => false
                 ]
             ]
         ],
         [
             'name' => 'Ventas',
             'icon' => 'fa-solid fa-basket-shopping', 
-            'active' => false,
-            'submenu_id' => 'dropdown-sales',
+            'active' => request()->routeIs([
+                'admin.customers.*'
+            ]),
             'submenu' => [
-
+                [
+                    'name' => 'Clientes',
+                    'icon' => 'fa-solid fa-users',
+                    'route' => route('admin.customers.index'),
+                    'active' => request()->routeIs('admin.customers.*')
+                ],
+                [
+                    'name' => 'Cotizaciones',
+                    'icon' => 'fa-solid fa-file-pen',
+                    'route' => '',
+                    'active' => false
+                ],
+                [
+                    'name' => 'Ventas',
+                    'icon' => 'fa-solid fa-cart-shopping',
+                    'route' => '',
+                    'active' => false
+                ]
             ]
         ],
         [
             'name' => 'Movimientos',
             'icon' => 'fa-solid fa-sync',
             'active' => false,
-            'submenu_id' => 'dropdown-movements',
             'submenu' => [
-
+                [
+                    'name' => 'Entradas y Salidas',
+                    'icon' => 'fa-solid fa-arrow-right-arrow-left',
+                    'route' => '',
+                    'active' => false
+                ],
+                [
+                    'name' => 'Transferencias',
+                    'icon' => 'fa-solid fa-building-columns',
+                    'route' => '',
+                    'active' => false
+                ]
             ]
+        ],
+        [
+            'name' => 'Reportes',
+            'icon' => 'fa-solid fa-chart-line',
+            'route' => '',
+            'active' => false
         ],
         [
             'header' => 'Configuraciones'
         ],
         [
-            'name' => 'Clientes',
-            'icon' => 'fa-solid fa-users',
-            'route' => route('admin.customers.index'),
-            'active' => request()->routeIs('admin.customers.*')
+            'name' => 'Usuarios',
+            'icon' => 'fa-solid fa-user',
+            'route' => '',
+            'active' => false
+        ],
+        [
+            'name' => 'Roles',
+            'icon' => 'fa-solid fa-id-badge',
+            'route' => '',
+            'active' => false
+        ],
+        [
+            'name' => 'Permisos',
+            'icon' => 'fa-solid fa-key',
+            'route' => '',
+            'active' => false
+        ],
+        [
+            'name' => 'Ajustes',
+            'icon' => 'fa-solid fa-gear',
+            'route' => '',
+            'active' => false
         ],
     ];
 @endphp
@@ -92,37 +160,39 @@
                         </div>
                     @else
                         @isset($link['submenu'])
-                            <button type="button"
-                                class="flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group hover:bg-blue-500"
-                                aria-controls="{{ $link['submenu_id'] }}" 
-                                data-collapse-toggle="{{ $link['submenu_id'] }}">
-                                <span class="w-6 h-6 inline-flex justify-center items-center text-white">
-                                    <i class="{{ $link['icon'] }}"></i>
-                                </span>
-                                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-bold">
-                                    {{ $link['name'] }}
-                                </span>
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="m1 1 4 4 4-4" />
-                                </svg>
-                            </button>
-                            <ul id="{{ $link['submenu_id'] }}" class="hidden py-2 space-y-2">
-                                @foreach ($link['submenu'] as $item)
-                                    <li>
-                                        <a href="{{ $item['route'] }}"
-                                            class="flex items-center gap-2 w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-blue-500 {{ $item['active'] ? 'bg-blue-500' : '' }}">
-                                            <span class="w-6 h-6 inline-flex justify-center items-center text-white">
-                                                <i class="{{ $item['icon'] }}"></i>
-                                            </span>
-                                            <div class="text-left">
-                                                {{ $item['name'] }}
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            <div x-data="{
+                                open: {{ $link['active'] ? 'true' : 'false' }}
+                            }">
+                                <button type="button"
+                                    @click= "open = !open"
+                                    class="flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group hover:bg-blue-500">
+                                    <span class="w-6 h-6 inline-flex justify-center items-center text-white">
+                                        <i class="{{ $link['icon'] }}"></i>
+                                    </span>
+                                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-bold">
+                                        {{ $link['name'] }}
+                                    </span>
+                                    <i class="text-sm" :class="{
+                                        'fa-solid fa-chevron-up' : open,
+                                        'fa-solid fa-chevron-down' : !open,
+                                    }"></i>
+                                </button>
+                                <ul x-show="open" x-cloak class="py-2 space-y-2">
+                                    @foreach ($link['submenu'] as $item)
+                                        <li>
+                                            <a href="{{ $item['route'] }}"
+                                                class="flex items-center gap-2 w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-blue-500 {{ $item['active'] ? 'bg-blue-500' : '' }}">
+                                                <span class="w-6 h-6 inline-flex justify-center items-center text-white">
+                                                    <i class="{{ $item['icon'] }}"></i>
+                                                </span>
+                                                <div class="text-left">
+                                                    {{ $item['name'] }}
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @else
                             <a href="{{ $link['route'] }}"
                                 class="flex items-center p-2 rounded-lg dark:text-black hover:bg-blue-500 {{ $link['active'] ? 'bg-blue-500' : '' }}">
