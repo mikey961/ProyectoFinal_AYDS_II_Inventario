@@ -16,6 +16,10 @@ class PurchaseOrder extends Model
         'observation'
     ];
 
+    protected $casts = [
+        'date' => 'datetime'
+    ];
+
     //Relacion uno a muchos inversa
     public function supplier(){
         return $this->belongsTo(Supplier::class);

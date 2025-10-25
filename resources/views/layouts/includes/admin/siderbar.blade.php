@@ -42,7 +42,8 @@
             'name' => 'Compras',
             'icon' => 'fa-solid fa-shop',
             'active' => request()->routeIs([
-                'admin.suppliers.*'
+                'admin.suppliers.*',
+                'admin.purchase-orders.*'
             ]),
             'submenu' => [
                 [
@@ -54,8 +55,8 @@
                 [
                     'name' => 'Ordenes de compra',
                     'icon' => 'fa-solid fa-boxes-packing',
-                    'route' => '',
-                    'active' => false
+                    'route' => route('admin.purchase-orders.index'),
+                    'active' => request()->routeIs('admin.purchase-orders.*')
                 ],
                 [
                     'name' => 'Compras',
