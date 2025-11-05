@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrdersController;
+use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -48,7 +49,7 @@ Route::resource('purchases', PurchaseController::class)->only(['index', 'create'
 Route::resource('customers', CustomerController::class)->except('show');
 
 //Ruta Cotizaciones
-
+Route::resource('quotes', QuoteController::class)->only(['index', 'create']);
 
 //Ruta de ventas
 

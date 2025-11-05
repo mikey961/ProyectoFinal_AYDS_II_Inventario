@@ -71,7 +71,8 @@
             'name' => 'Ventas',
             'icon' => 'fa-solid fa-basket-shopping', 
             'active' => request()->routeIs([
-                'admin.customers.*'
+                'admin.customers.*',
+                'admin.quotes.*'
             ]),
             'submenu' => [
                 [
@@ -83,8 +84,8 @@
                 [
                     'name' => 'Cotizaciones',
                     'icon' => 'fa-solid fa-file-pen',
-                    'route' => '',
-                    'active' => false
+                    'route' => route('admin.quotes.index'),
+                    'active' => request()->routeIs('admin.quotes.*')
                 ],
                 [
                     'name' => 'Ventas',
