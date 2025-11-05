@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Admin\Datatables;
 
+use App\Models\Purchase;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use Illuminate\Database\Eloquent\Builder;
 
-class PurchaseOrdersTable extends DataTableComponent
+class PurchaseTable extends DataTableComponent
 {
-    //protected $model = PurchaseOrder::class;
+    //protected $model = Purchase::class;
 
     public function configure(): void
     {
@@ -45,6 +46,6 @@ class PurchaseOrdersTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return PurchaseOrder::query()->with(['supplier']);
+        return Purchase::query()->with(['supplier']);
     }
 }

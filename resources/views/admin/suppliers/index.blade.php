@@ -34,7 +34,7 @@ title="Proveedores"
         href="{{ route('admin.suppliers.create') }}"
         amber 
         rounded>
-            Nuevo proveedor
+            Nuevo Proveedor
         </x-wire-button>
     </x-slot>
     

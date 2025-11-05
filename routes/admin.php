@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrdersController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
@@ -14,7 +15,7 @@ Route::get('/', function(){
     return view('admin.dashboard');
 })->name('dashboard');
 
-// RUTAS INVENTARIO
+// {RUTAS INVENTARIO}
 
 //Ruta de categorías
 Route::resource('categories', CategoryController::class)->except(['show']);
@@ -29,7 +30,7 @@ Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('imag
 //Ruta de Almacenes
 Route::resource('warehouses', WarehouseController::class)->except('show');
 
-//RUTAS DE COMPRAS
+//{RUTAS DE COMPRAS}
 
 //Ruta de Proveedores
 Route::resource('suppliers', SupplierController::class)->except('show');
@@ -38,9 +39,10 @@ Route::resource('suppliers', SupplierController::class)->except('show');
 Route::resource('purchase-orders', PurchaseOrdersController::class)->only(['index', 'create']);
 
 //Ruta de compras
+Route::resource('purchases', PurchaseController::class)->only(['index', 'create']);
 
 
-//RUTAS DE VENTAS
+//{RUTAS DE VENTAS}
 
 //Ruta Clientes
 Route::resource('customers', CustomerController::class)->except('show');
