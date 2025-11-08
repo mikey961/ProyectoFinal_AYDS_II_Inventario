@@ -18,6 +18,10 @@ class Sale extends Model
         'observation'
     ];
 
+    protected $casts = [
+        'date' => 'datetime'
+    ];
+
     //Relacion uno a muchos inversa
     public function customer(){
         return $this->belongsTo(Customer::class);

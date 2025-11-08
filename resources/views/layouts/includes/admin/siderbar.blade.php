@@ -72,7 +72,8 @@
             'icon' => 'fa-solid fa-basket-shopping', 
             'active' => request()->routeIs([
                 'admin.customers.*',
-                'admin.quotes.*'
+                'admin.quotes.*',
+                'admin.sales.*'
             ]),
             'submenu' => [
                 [
@@ -90,8 +91,8 @@
                 [
                     'name' => 'Ventas',
                     'icon' => 'fa-solid fa-cart-shopping',
-                    'route' => '',
-                    'active' => false
+                    'route' => route('admin.sales.index'),
+                    'active' => request()->routeIs('admin.sales.*')
                 ]
             ]
         ],

@@ -27,19 +27,21 @@ class QuoteTable extends DataTableComponent
                 ->sortable()
                 ->format(fn ($value) => $value->format('d-m-Y')),
             Column::make("Serie", "serie")
+                ->searchable()
                 ->sortable(),
             Column::make("Correlativo", "correlative")
                 ->sortable(),
             Column::make("Documento", "customer.document_number")
                 ->sortable(),
-            Column::make("Proveedor", "customer.name")
+            Column::make("Cliente", "customer.name")
+                ->searchable()
                 ->sortable(),
             Column::make("Total", "total")
                 ->sortable()
                 ->format(fn ($value) => '₡ ' . number_format($value, 2, '.', ',')),
             Column::make("Acciones")
                 ->label(function ($row) {
-                    return view('admin.purchase-orders.actions', ['purchaseOrder' => $row]);
+                    return view('admin.quotes.actions', ['quote' => $row]);
                 })
         ];
     }

@@ -26,12 +26,14 @@ class PurchaseOrdersTable extends DataTableComponent
                 ->sortable()
                 ->format(fn ($value) => $value->format('d-m-Y')),
             Column::make("Serie", "serie")
+                ->searchable()
                 ->sortable(),
             Column::make("Correlativo", "correlative")
                 ->sortable(),
             Column::make("Documento", "supplier.document_number")
                 ->sortable(),
             Column::make("Proveedor", "supplier.name")
+                ->searchable()
                 ->sortable(),
             Column::make("Total", "total")
                 ->sortable()

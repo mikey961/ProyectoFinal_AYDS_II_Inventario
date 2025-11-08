@@ -19,8 +19,9 @@ return new class extends Migration
             $table->timestamp('date')
                 ->useCurrent();
             $table->foreignId('purchase_order_id')
+                ->nullable()
                 ->constrained()
-                ->onDelete('cascade');
+                ->onDelete('set null');
             $table->foreignId('supplier_id')
                 ->constrained()
                 ->onDelete('cascade');
