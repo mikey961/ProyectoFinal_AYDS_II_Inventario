@@ -2,7 +2,8 @@
 title="Cotizaciones"
 :breadcrumbs="[
     [
-        'name' => 'Ventas'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Cotizaciones'

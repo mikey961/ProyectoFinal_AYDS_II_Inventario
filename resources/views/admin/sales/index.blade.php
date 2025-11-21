@@ -2,7 +2,8 @@
 title="Ventas"
 :breadcrumbs="[
     [
-        'name' => 'Ventas'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Listado de ventas'

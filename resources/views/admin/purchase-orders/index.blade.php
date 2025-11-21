@@ -2,7 +2,8 @@
 title="Ordenes de compra"
 :breadcrumbs="[
     [
-        'name' => 'Compras'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Ordenes de compra'

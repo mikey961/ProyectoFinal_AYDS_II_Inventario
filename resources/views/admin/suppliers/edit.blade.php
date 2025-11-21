@@ -2,7 +2,8 @@
 title="Editar proveedor"
 :breadcrumbs="[
     [
-        'name' => 'Compras'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Proveedores',

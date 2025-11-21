@@ -99,13 +99,15 @@
         [
             'name' => 'Movimientos',
             'icon' => 'fa-solid fa-sync',
-            'active' => false,
+            'active' => request()->routeIs([
+                'admin.movements.*'
+            ]),
             'submenu' => [
                 [
                     'name' => 'Entradas y Salidas',
                     'icon' => 'fa-solid fa-arrow-right-arrow-left',
-                    'route' => '',
-                    'active' => false
+                    'route' => route('admin.movements.index'),
+                    'active' => request()->routeIs('admin.movements.*')
                 ],
                 [
                     'name' => 'Transferencias',

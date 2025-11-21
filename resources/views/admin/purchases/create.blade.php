@@ -2,7 +2,8 @@
 title="Nueva compra"
 :breadcrumbs="[
     [
-        'name' => 'Compras'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Listado de compras',

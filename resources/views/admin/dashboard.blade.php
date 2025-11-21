@@ -1,8 +1,4 @@
 <x-admin-layout 
-title="Dashboard"
-:breadcrumbs="[
-    [
-        'name' => 'Dashboard'
-    ]
-]">
+title="Dashboard">
+
 </x-admin-layout>

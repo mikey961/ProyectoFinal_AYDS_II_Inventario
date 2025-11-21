@@ -2,7 +2,8 @@
 title="Categorías"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Categorías'

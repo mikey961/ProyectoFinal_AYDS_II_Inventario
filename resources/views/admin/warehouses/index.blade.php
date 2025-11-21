@@ -2,7 +2,8 @@
 title="Almacenes"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Almacenes'

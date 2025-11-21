@@ -1,23 +1,23 @@
 <x-admin-layout 
-title="Compras"
+title="Entradas y Salidas"
 :breadcrumbs="[
     [
         'name' => 'Dashboard',
         'route' => route('admin.dashboard')
     ],
     [
-        'name' => 'Listado de compras'
+        'name' => 'Entradas y salidas'
     ]
 
 ]">
     <x-slot name="action">
         <x-wire-button class="font-semibold" 
-            href="{{ route('admin.purchases.create') }}"
+            href="{{ route('admin.movements.create') }}"
             amber 
             rounded>
-            Nueva compra
+            Nuevo movimiento
         </x-wire-button>
     </x-slot>
 
-    @livewire('admin.datatables.purchase-table')
+    @livewire('admin.datatables.movement-table')
 </x-admin-layout>

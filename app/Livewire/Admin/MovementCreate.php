@@ -2,26 +2,25 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Movements;
 use App\Models\Product;
-use App\Models\Purchase;
 use App\Models\PurchaseOrder;
+use App\Models\Quote;
 use Livewire\Component;
 
-class PurchaseCreate extends Component
+class MovementCreate extends Component
 {
-    public $voucher_type = 1;
-    public $serie;
+    public $type = 1;
+    public $serie = "M001";
     public $correlative;
     public $date;
-    public $purchase_order_id;
-    public $supplier_id;
     public $warehouse_id;
+    public $reason_id;
     public $total = 0;
     public $observation;
     public $product_id;
     public $products = [];
 
-    //Validar si hay error por no haber seleccionado un producto
     public function boot() {
         //Verificar si hay algun error de validación previo
         $this->withValidator(function ($validator) {
@@ -39,28 +38,16 @@ class PurchaseCreate extends Component
         });
     }
 
-    //Nos sirve para traer al provedor y los productos por medio de la orden de compra
+    public function mount() {
+        $this->correlative = Movements::max('correlative') + 1;
+    }
+
     public function updated($property, $value) {
-        if ($property == 'purchase_order_id') {
-            $purchaseOrder = PurchaseOrder::find($value);
-            if ($purchaseOrder) {
-                $this->voucher_type = $purchaseOrder->voucher_type;
-                $this->supplier_id = $purchaseOrder->supplier_id;
-            
-                $this->products = $purchaseOrder->product->map(function($product) {
-                    return [
-                        'id' => $product->id,
-                        'name' => $product->name,
-                        'quantity' => $product->pivot->quantity,
-                        'price' => $product->pivot->price,
-                        'subtotal' => $product->pivot->subtotal
-                    ];
-                })->toArray();
-            }
+        if ($property == 'type') {
+            $this->reset('reason_id');
         }
     }
 
-    //Agregar producto a la tabla
     public function addProduct() {
         $this->validate([
             'product_id' => 'required|exists:products,id'
@@ -84,22 +71,20 @@ class PurchaseCreate extends Component
             'id' => $product->id,
             'name' => $product->name,
             'quantity' => 1,
-            'price' => 0,
-            'subtotal' => 0
+            'price' => $product->price,
+            'subtotal' => $product->price
         ];
         $this->reset('product_id');
     }
 
-    //Guardar data 
     public function save() {
         $this->validate([
-            'voucher_type' => 'required|in:1,2',
+            'type' => 'required|in:1,2',
             'serie' => 'required|string|max:10',
-            'correlative' => 'required|string|max:10',
+            'correlative' => 'required|numeric|min:1',
             'date' => 'nullable|date',
-            'purchase_order_id' => 'nullable|exists:purchase_orders,id',
-            'supplier_id' => 'required|exists:suppliers,id',
             'warehouse_id' => 'required|exists:warehouses,id',
+            'reason_id' => 'required|exists:reasons,id',
             'total' => 'required|numeric|min:0',
             'observation' => 'nullable|string|max:255',
             'products' => 'required|array|min:1',
@@ -107,10 +92,9 @@ class PurchaseCreate extends Component
             'products.*.quantity' => 'required|numeric|min:1',
             'products.*.price' => 'required|numeric|min:0',
         ],[],[
-            'voucher_type' => 'tipo de comprobante',
-            'date' => 'fecha',
-            'supplier_id' => 'proveedor',
-            'total' => 'total',
+            'type' => 'tipo de movimiento',
+            'warehouse_id' => 'almacén',
+            'reason_id' => 'motivo',
             'observation' => 'observación',
             'products' => 'productos',
             'products.*.id' => 'producto',
@@ -118,20 +102,19 @@ class PurchaseCreate extends Component
             'products.*.price' => 'precio',
         ]);
 
-        $purchase = Purchase::create([
-            'voucher_type' => $this->voucher_type,
+        $movements = Movements::create([
+            'type' => $this->type,
             'serie' => $this->serie,
             'correlative' => $this->correlative,
             'date' => $this->date ?? now(),
-            'purchase_order_id' => $this->purchase_order_id,
-            'supplier_id' => $this->supplier_id,
             'warehouse_id' => $this->warehouse_id,
             'total' => $this->total,
-            'observation' => $this->observation
+            'observation' => $this->observation,
+            'reason_id' => $this->reason_id
         ]);
 
         foreach ($this->products as $product) {
-            $purchase->product()->attach($product['id'], [
+            $movements->product()->attach($product['id'], [
                 'quantity' => $product['quantity'],
                 'price' => $product['price'],
                 'subtotal' => $product['quantity'] * $product['price'],
@@ -141,14 +124,14 @@ class PurchaseCreate extends Component
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
-            'text' => 'La compra se ha creado correctamente'
+            'text' => 'Movimiento creado correctamente'
         ]);
 
-        return redirect()->route('admin.purchases.index');
+        return redirect()->route('admin.movements.index');
     }
 
     public function render()
     {
-        return view('livewire.admin.purchase-create');
+        return view('livewire.admin.movement-create');
     }
 }

@@ -2,14 +2,15 @@
 title="Nuevo alamcén"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Almacenes',
         'route' => route('admin.warehouses.index')
     ],
     [
-        'name' => 'Nuevo alamacén'
+        'name' => 'Nuevo almacén'
     ]
 ]">
     <x-wire-card>

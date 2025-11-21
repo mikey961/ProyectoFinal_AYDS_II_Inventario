@@ -1,14 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\ReasonController;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\Quote;
+use App\Models\Reason;
 use App\Models\Supplier;
 use App\Models\Warehouse;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rules\Exists;
 
 //Api para traer los proveedores
 Route::post('/suppliers', function(Request $request){
@@ -17,6 +20,10 @@ Route::post('/suppliers', function(Request $request){
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('document_number', 'like', "%{$search}%");
         })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->input('selected', []))
+        )
         ->get();
 })->name('api.suppliers.index'); 
 
@@ -27,6 +34,10 @@ Route::post('/products', function(Request $request){
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('sku', 'like', "%{$search}%");
         })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->input('selected', []))
+        )
         ->get();
 })->name('api.products.index'); 
 
@@ -53,6 +64,10 @@ Route::post('/purchase-orders', function(Request $request){
                 return;
             }
         })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->input('selected', []))
+        )
         ->with(['supplier'])
         ->orderBy('created_at', 'desc')
         ->get();
@@ -73,6 +88,10 @@ Route::post('/warehouses', function(Request $request){
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('location', 'like', "%{$search}%");
         })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->input('selected', []))
+        )
         ->get();
 })->name('api.warehouses.index'); 
 
@@ -109,6 +128,10 @@ Route::post('/quotes', function(Request $request){
                 return;
             }
         })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->input('selected', []))
+        )
         ->with(['customer'])
         ->orderBy('created_at', 'desc')
         ->get();
@@ -121,3 +144,18 @@ Route::post('/quotes', function(Request $request){
         ];
     });
 })->name('api.quotes.index'); 
+
+
+//    Api para traer las razones
+Route::post('/reasons', function(Request $request){
+    return Reason::select('id', 'name')
+        ->when($request->search, function($query, $search) {
+            $query->where('name', 'like', "%{$search}%");
+        })
+        ->when(
+            $request->exists('selected'),
+            fn($query) => $query->whereIn('id', $request->input('selected', [])),
+        )
+        ->where('type', $request->input('type', ''))
+        ->get();
+})->name('api.reasons.index');

@@ -2,6 +2,10 @@
 title="Clientes"
 :breadcrumbs="[
     [
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
+    ],
+    [
         'name' => 'Clientes'
     ]
 

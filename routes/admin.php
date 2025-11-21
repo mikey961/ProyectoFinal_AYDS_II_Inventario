@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\Admin\MovementsController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrdersController;
@@ -58,7 +59,7 @@ Route::resource('sales', SaleController::class)->only(['index', 'create']);
 //RUTAS DE MOVIMIENTOS
 
 //Ruta de entradas y salidas
-
+Route::resource('movements', MovementsController::class)->only(['index', 'create']);
 
 //Ruta de Transferencias
 

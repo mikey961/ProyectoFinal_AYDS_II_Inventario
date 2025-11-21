@@ -17,6 +17,20 @@ class Movements extends Model
         'reason_id'
     ];
 
+    protected $casts = [
+        'date' => 'datetime'
+    ];
+
+    //Relación uno a muchos inversa
+    public function warehouse() {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    //Relación uno a muchos inversa
+    public function reason() {
+        return $this->belongsTo(Reason::class);
+    }
+
     //Relación muchos a muchos
     public function product(){
         return $this->morphToMany(Product::class, 'productable')

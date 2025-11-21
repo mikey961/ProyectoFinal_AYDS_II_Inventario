@@ -2,7 +2,8 @@
 title="Editar producto"
 :breadcrumbs="[
     [
-        'name' => 'Inventario'
+        'name' => 'Dashboard',
+        'route' => route('admin.dashboard')
     ],
     [
         'name' => 'Productos',

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Datatables;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Product;
+use BcMath\Number;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 
@@ -35,7 +36,8 @@ class ProductTable extends DataTableComponent
                 ->searchable()
                 ->sortable(),
             Column::make("Precio", "price")
-                ->sortable(),
+                ->sortable()
+                ->format(fn($value) => '₡ ' . number_format($value, 2, '.', ',')),
             Column::make("Acciones")
                 ->label(function($row) {
                     return view('admin.products.actions', ['product' => $row]);
