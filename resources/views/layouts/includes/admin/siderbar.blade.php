@@ -100,7 +100,8 @@
             'name' => 'Movimientos',
             'icon' => 'fa-solid fa-sync',
             'active' => request()->routeIs([
-                'admin.movements.*'
+                'admin.movements.*',
+                'admin.transfers.*'
             ]),
             'submenu' => [
                 [
@@ -112,8 +113,8 @@
                 [
                     'name' => 'Transferencias',
                     'icon' => 'fa-solid fa-building-columns',
-                    'route' => '',
-                    'active' => false
+                    'route' => route('admin.transfers.index'),
+                    'active' => request()->routeIs('admin.transfers.*')
                 ]
             ]
         ],

@@ -7,9 +7,10 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use App\Models\Quote;
+use App\Models\Transfer;
 use Illuminate\Database\Eloquent\Builder;
 
-class MovementTable extends DataTableComponent
+class TransferTable extends DataTableComponent
 {
     //protected $model = PurchaseOrder::class;
 
@@ -27,23 +28,14 @@ class MovementTable extends DataTableComponent
             Column::make("Fecha", "date")
                 ->sortable()
                 ->format(fn ($value) => $value->format('d-m-Y')),
-            Column::make("Tipo", "type")
-                ->searchable()
-                ->sortable()
-                ->format(fn ($value) => match ($value) {
-                    1 => 'Ingreso',
-                    2 => 'Salida',
-                    default => 'Desconocido'
-                }),
             Column::make("Serie", "serie")
-                ->searchable()
                 ->sortable(),
             Column::make("Correlativo", "correlative")
                 ->sortable(),
-            Column::make("Almacén", "warehouse.name")
+            Column::make("Almacén Origen", "origin_warehouse.name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Razón", "reason.name")
+            Column::make("Almacén destino", "destination_warehouse.name")
                 ->searchable()
                 ->sortable(),
             Column::make("Total", "total")
@@ -51,13 +43,13 @@ class MovementTable extends DataTableComponent
                 ->format(fn ($value) => '₡ ' . number_format($value, 2, '.', ',')),
             Column::make("Acciones")
                 ->label(function ($row) {
-                    return view('admin.movements.actions', ['movement' => $row]);
+                    return view('admin.transfers.actions', ['transfer' => $row]);
                 })
         ];
     }
 
     public function builder(): Builder
     {
-        return Movements::query()->with(['warehouse', 'reason']);
+        return Transfer::query()->with(['origin_warehouse', 'destination_warehouse']);
     }
 }

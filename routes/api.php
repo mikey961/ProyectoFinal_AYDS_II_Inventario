@@ -88,6 +88,9 @@ Route::post('/warehouses', function(Request $request){
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('location', 'like', "%{$search}%");
         })
+        ->when($request->exclude, function($query, $exlude) {
+            $query->where('id', '!=', $exlude);
+        })
         ->when(
             $request->exists('selected'),
             fn($query) => $query->whereIn('id', $request->input('selected', []))

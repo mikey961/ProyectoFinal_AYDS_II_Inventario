@@ -17,5 +17,10 @@ class WarehouseSeeder extends Seeder
             'name' => 'Almacen Principal',
             'location' => 'Calle principal, Liberia, 25 de julio'
         ]);
+
+        Warehouse::create([
+            'name' => 'Almacen Central',
+            'location' => 'Curridabat, San José, Costa Rica'
+        ]);
     }
 }
