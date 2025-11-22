@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseOrder;
@@ -135,6 +136,31 @@ class PurchaseCreate extends Component
                 'quantity' => $product['quantity'],
                 'price' => $product['price'],
                 'subtotal' => $product['quantity'] * $product['price'],
+            ]);
+
+            //Kardex
+            $lastKardex = Inventory::where('product_id', $product['id'])
+                ->where('warehouse_id', $this->warehouse_id)
+                ->latest('id')
+                ->first();
+
+            $lastQuantityBalance = $lastKardex?->quantity_balance ?? 0;
+            $lastTotalBalance = $lastKardex?->total_balance ?? 0;
+
+            $newQuantityBalance = $lastQuantityBalance + $product['quantity'];
+            $newTotalBalance = $lastTotalBalance + ($product['quantity'] * $product['price']);
+            $newCostBalance = $newTotalBalance / $newQuantityBalance;
+
+            $purchase->inventories()->create([
+                'detail' => 'Compra',
+                'quantity_in' => $product['quantity'],
+                'cost_in' => $product['price'],
+                'total_in' => $product['quantity'] * $product['price'],
+                'quantity_balance' => $newQuantityBalance,
+                'cost_balance' => $newCostBalance,
+                'total_balance' => $newTotalBalance,
+                'product_id' => $product['id'],
+                'warehouse_id' => $this->warehouse_id,
             ]);
         }
 
