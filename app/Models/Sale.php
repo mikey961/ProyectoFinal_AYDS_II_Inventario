@@ -23,14 +23,18 @@ class Sale extends Model
     ];
 
     //Relacion uno a muchos inversa
-    public function customer(){
+    public function customer() {
         return $this->belongsTo(Customer::class);
     }
 
     //Relación muchos a muchos
-    public function product(){
+    public function product() {
         return $this->morphToMany(Product::class, 'productable')
             ->withPivot('quantity', 'price', 'subtotal')
             ->withTimestamps();
+    }
+
+    public function inventories() {
+        return $this->morphMany(Inventory::class, 'inventoryable');
     }
 }
