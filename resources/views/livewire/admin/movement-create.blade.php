@@ -1,5 +1,5 @@
 <div x-data="{
-    products: @entangle('products'),
+    products: @entangle('products').live,
 
     total: @entangle('total'),
 
@@ -54,13 +54,13 @@
                     wire:model="warehouse_id"
                     :async-data="[
                         'api' => route('api.warehouses.index'),
-                        'method' => 'POST'
+                        'method' => 'POST'                        
                     ]"
                     option-label="name"
                     option-value="id"
                     option-description="description"
+                    :disabled="count($products)"
                 />
-
                 <x-wire-select class="lg:col-span-2"
                     label="Motivo"
                     placeholder="Seleccione un motivo"
@@ -138,7 +138,6 @@
                                         type="number"
                                         class="w-20"
                                         step="0.01"
-                                        disabled
                                     />
                                 </td>
                                 <td class="px-4 py-2"
