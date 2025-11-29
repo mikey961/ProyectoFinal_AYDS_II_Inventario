@@ -1,5 +1,5 @@
 <div x-data="{
-    products: @entangle('products'),
+    products: @entangle('products').live,
 
     total: @entangle('total'),
 
@@ -82,6 +82,7 @@
                         option-value="id"
                         option-label="name"
                         option-description="description"
+                        :disabled="count($products)"
                     />
                 </div>
             </div>

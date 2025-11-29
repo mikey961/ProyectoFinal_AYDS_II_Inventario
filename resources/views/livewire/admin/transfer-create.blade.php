@@ -1,5 +1,5 @@
 <div x-data="{
-    products: @entangle('products'),
+    products: @entangle('products').live,
 
     total: @entangle('total'),
 
@@ -53,6 +53,7 @@
                     option-label="name"
                     option-value="id"
                     option-description="description"
+                    :disabled="count($products)"
                 />
                 <x-wire-select
                     label="Almacén de destino"

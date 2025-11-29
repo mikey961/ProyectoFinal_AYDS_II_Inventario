@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin;
 
+use App\Facades\Kardex;
 use App\Models\Inventory;
 use App\Models\Movements;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\Quote;
+use App\Services\KardexServices;
 use Livewire\Component;
 
 class MovementCreate extends Component
@@ -130,42 +132,11 @@ class MovementCreate extends Component
             ]);
 
             //Kardex
-            $lastKardex = Inventory::where('product_id', $product['id'])
-                ->where('warehouse_id', $this->warehouse_id)
-                ->latest('id')
-                ->first();
-
-            $lastQuantityBalance = $lastKardex?->quantity_balance ?? 0;
-            $lastTotalBalance = $lastKardex?->total_balance ?? 0;
-
-            $inventory = new Inventory();
-            $inventory->inventoryable_type = Movements::class;
-            $inventory->inventoryable_id = $movement->id;
-            $inventory->product_id = $product['id'];
-            $inventory->warehouse_id = $this->warehouse_id;
-            $inventory->detail = 'Movimiento';
-            
             if ($this->type == 1) {
-                $newQuantityBalance = $lastQuantityBalance + $product['quantity'];
-                $newTotalBalance = $lastTotalBalance + ($product['quantity'] * $product['price']);
-
-                $inventory->quantity_in = $product['quantity'];
-                $inventory->cost_in = $product['price'];
-                $inventory->total_in = $product['quantity'] * $product['price'];
+                Kardex::registerEntry($movement, $product, $this->warehouse_id, 'Movimiento');
             } elseif ($this->type == 2) {
-                $newQuantityBalance = $lastQuantityBalance - $product['quantity'];
-                $newTotalBalance = $lastTotalBalance - ($product['quantity'] * $product['price']);
-                
-                $inventory->quantity_out = $product['quantity'];
-                $inventory->cost_out = $product['price'];
-                $inventory->total_out = $product['quantity'] * $product['price'];
+                Kardex::registerExit($movement, $product, $this->warehouse_id, 'Movimiento');
             }
-
-            $inventory->quantity_balance = $newQuantityBalance;
-            $inventory->cost_balance = $newTotalBalance / ($newQuantityBalance ?: 1);
-            $inventory->total_balance = $newTotalBalance;
-
-            $inventory->save();
         }
 
         session()->flash('swal', [
