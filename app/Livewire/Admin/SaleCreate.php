@@ -44,7 +44,7 @@ class SaleCreate extends Component
 
     //Nos sirve para traer el numero de correlativo de dicha venta
     public function mount() {
-        $this->correlative = Quote::max('correlative') + 1;
+        $this->correlative = Sale::max('correlative') + 1;
     }
 
     //Nos sirve para traer el cliente y los productos asociados a dicho cliente por medio de la cotización

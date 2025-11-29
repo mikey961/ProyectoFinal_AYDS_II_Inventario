@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Inventory;
+use App\Models\Product;
 
 class KardexServices 
 {
@@ -38,6 +39,9 @@ class KardexServices
             'product_id' => $product['id'],
             'warehouse_id' => $warehouseId
         ]);
+
+        Product::where('id', $product['id'])
+            ->increment('stock', $product['quantity']);
     }
 
     public function registerExit($model, array $product, $warehouseId, $detail) {
@@ -58,5 +62,8 @@ class KardexServices
             'product_id' => $product['id'],
             'warehouse_id' => $warehouseId
         ]);
+
+        Product::where('id', $product['id'])
+            ->decrement('stock', $product['quantity']);
     }
 }
