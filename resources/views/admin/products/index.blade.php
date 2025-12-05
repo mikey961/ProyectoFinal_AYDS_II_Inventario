@@ -48,7 +48,7 @@ title="Productos"
     
     <div class="mt-4">
         @livewire('admin.datatables.product-table')
-    </div> 
+    </div>
     
     @push('js')
         <script>

@@ -15,7 +15,7 @@
                 </button>
                 <a href="/" class="flex ms-2 md:me-24">
                     <span class="self-center text-xl font-extrabold sm:text-2xl whitespace-nowrap text-white">
-                        Sistema Electrodomésticos
+                        Sistema Inventario - TecnoTech
                     </span>
                 </a>
             </div>

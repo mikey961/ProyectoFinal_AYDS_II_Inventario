@@ -31,6 +31,9 @@ Route::resource('products', ProductController::class)->except(['show']);
 Route::post('products/{product}/dropzone', [ProductController::class, 'dropzone'])->name('products.dropzone');
 Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('image.destroy');
 
+//Ruta del Kardex
+Route::get('products/{product}/kardex', [ProductController::class, 'kardex'])->name('products.kardex');
+
 //Ruta de Almacenes
 Route::resource('warehouses', WarehouseController::class)->except('show');
 
