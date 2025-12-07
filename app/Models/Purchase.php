@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Purchase extends Model
 {
@@ -27,7 +28,10 @@ class Purchase extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-
+    //Relación uno a muchos inversa
+    public function warehouse() {
+        return $this->belongsTo(Warehouse::class);
+    }
     //Relación muchos a muchos
     public function product(){
         return $this->morphToMany(Product::class, 'productable')

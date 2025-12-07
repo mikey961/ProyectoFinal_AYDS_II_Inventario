@@ -45,8 +45,14 @@ Route::resource('suppliers', SupplierController::class)->except('show');
 //Ruta de ordenes de compra
 Route::resource('purchase-orders', PurchaseOrdersController::class)->only(['index', 'create']);
 
+//Ruta para los pdf's de ordenes de compra
+Route::get('purchase-orders/{purchaseOrder}/pdf', [PurchaseOrdersController::class, 'pdf'])->name('purchase-orders.pdf');
+
 //Ruta de compras
 Route::resource('purchases', PurchaseController::class)->only(['index', 'create']);
+
+//Ruta para los pdf's de compras
+Route::get('purchases/{purchase}/pdf', [PurchaseController::class, 'pdf'])->name('purchases.pdf');
 
 
 //{RUTAS DE VENTAS}
