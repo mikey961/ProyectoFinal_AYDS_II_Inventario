@@ -63,16 +63,30 @@ Route::resource('customers', CustomerController::class)->except('show');
 //Ruta Cotizaciones
 Route::resource('quotes', QuoteController::class)->only(['index', 'create']);
 
+//Ruta para los pdf's de cotizaciones
+Route::get('quotes/{quote}/pdf', [QuoteController::class, 'pdf'])->name('quotes.pdf');
+
 //Ruta de ventas
 Route::resource('sales', SaleController::class)->only(['index', 'create']);
+
+//Ruta para los pdf's de ventas
+Route::get('sales/{sale}/pdf', [SaleController::class, 'pdf'])->name('sales.pdf');
 
 //RUTAS DE MOVIMIENTOS
 
 //Ruta de entradas y salidas
 Route::resource('movements', MovementsController::class)->only(['index', 'create']);
 
+//Ruta para los pdf's de movimientos entradas o salidas
+Route::get('movements/{movement}/pdf', [MovementsController::class, 'pdf'])->name('movements.pdf');
+
 //Ruta de Transferencias
 Route::resource('transfers', TransferController::class)->only(['index', 'create']);
+
+//Ruta para los pdf's de transferencias
+Route::get('transfers/{transfer}/pdf', [TransferController::class, 'pdf'])->name('transfers.pdf');
+
+//Ruta de Transferencias
 
 //Ruta de usuarios
 

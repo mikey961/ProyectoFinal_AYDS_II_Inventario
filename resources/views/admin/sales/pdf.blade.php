@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle de compra</title>
+    <title>Detalle de venta</title>
     <style>
         body {
             font-family: 'DejaVu Sans', sans-serif;
@@ -67,12 +67,13 @@
     </style>
 </head>
 <body>
-    <div class="title">Detalle de compra #{{ $purchase->serie }}-{{ str_pad($purchase->correlative, 4, '0', STR_PAD_LEFT) }}</div>
+    <div class="title">Detalle de venta #{{ $sale->serie }}-{{ str_pad($sale->correlative, 4, '0', STR_PAD_LEFT) }}</div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($purchase->date)->format('d/m/Y') }}<br>
-        <strong>Proveedor:</strong> {{ $purchase->supplier->name ?? '_'}}<br>
-        <strong>Almacén:</strong> {{ $purchase->warehouse->name ?? '_'}}<br>
-        <strong>Observación:</strong> {{ $purchase->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($sale->date)->format('d/m/Y') }}<br>
+        <strong>Tipo de comprobante:</strong> {{ $sale->voucher_type == 1 ? 'Factura' : ($sale->voucher_type == 2 ? 'Boleta' : '_')}}<br>
+        <strong>Cliente:</strong> {{ $sale->customer->name ?? '_'}}<br>
+        <strong>Almacén:</strong> {{ $sale->warehouse->name ?? '_'}}<br>
+        <strong>Observación:</strong> {{ $sale->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -86,7 +87,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($purchase->product as $i => $products)
+                @foreach ($sale->product as $i => $products)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $products->name }}</td>
@@ -101,7 +102,7 @@
     <div class="section"
         style="text-align: right;">
         <strong>
-            Total: ₡ {{ number_format($purchase->total, 2) }}
+            Total: ₡ {{ number_format($sale->total, 2) }}
         </strong>
     </div>
 </body>

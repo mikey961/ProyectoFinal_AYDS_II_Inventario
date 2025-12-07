@@ -7,16 +7,29 @@
         body {
             font-family: 'DejaVu Sans', sans-serif;
             font-size: 12px;
-            margin: 20px;
+            margin: 25px;
             color: #333;
+            line-height: 1.4;
         }
+
         .title {
             text-align: center;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 20px;
-            color: #222
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
         }
+
+        .section {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #e3e3e3;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -24,29 +37,37 @@
             font-size: 12px;
         }
 
-        th, td {
-            border: 1px solid #ccc;
-            padding: 6px 8px;
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+            border-bottom: 2px solid #ccc;
+            padding: 8px;
             text-align: left;
         }
 
-        th {
-            background-color: #f0f0f0;
+        td {
+            border-bottom: 1px solid #e6e6e6;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .total-box {
+            text-align: right;
+            font-size: 16px;
             font-weight: bold;
-        }
-
-        .section {
-            margin-top: 20px;
-        }
-
-        @font-face {
-            font-family: 'DejaVu Sans';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/fonts/Roboto-Regular.ttf') format('truetype');
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <div class="title">Detalle de compra #{{ $purchaseOrder->serie }}-{{ str_pad($purchaseOrder->correlative, 4, '0', STR_PAD_LEFT) }}</div>
+    <div class="title">Detalle de la orden de compra #{{ $purchaseOrder->serie }}-{{ str_pad($purchaseOrder->correlative, 4, '0', STR_PAD_LEFT) }}</div>
     <div>
         <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($purchaseOrder->date)->format('d/m/Y') }}<br>
         <strong>Proveedor:</strong> {{ $purchaseOrder->supplier->name ?? '_'}}<br>

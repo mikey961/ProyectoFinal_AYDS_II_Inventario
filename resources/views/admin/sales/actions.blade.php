@@ -6,7 +6,8 @@
     </x-wire-mini-button>
     <x-wire-mini-button 
         rounded
-        red>
+        red
+        href="{{ route('admin.sales.pdf', $sale) }}">
         <i class="fa-solid fa-file-pdf"></i>
     </x-wire-mini-button>
 </div>
