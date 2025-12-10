@@ -21,7 +21,7 @@ class PurchaseOrdersController extends Controller
 
     public function pdf(PurchaseOrder $purchaseOrder) {
         $pdf = Pdf::loadView('admin.purchase-orders.pdf', [
-            'purchaseOrder' => $purchaseOrder
+            'model' => $purchaseOrder
         ]);
 
         return $pdf->download("OrdenCompra_{$purchaseOrder->id}.pdf");

@@ -67,13 +67,13 @@
     </style>
 </head>
 <body>
-    <div class="title">Detalle de venta #{{ $sale->serie }}-{{ str_pad($sale->correlative, 4, '0', STR_PAD_LEFT) }}</div>
+    <div class="title">Detalle de venta #{{ $model->serie }}-{{ str_pad($model->correlative, 4, '0', STR_PAD_LEFT) }}</div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($sale->date)->format('d/m/Y') }}<br>
-        <strong>Tipo de comprobante:</strong> {{ $sale->voucher_type == 1 ? 'Factura' : ($sale->voucher_type == 2 ? 'Boleta' : '_')}}<br>
-        <strong>Cliente:</strong> {{ $sale->customer->name ?? '_'}}<br>
-        <strong>Almacén:</strong> {{ $sale->warehouse->name ?? '_'}}<br>
-        <strong>Observación:</strong> {{ $sale->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($model->date)->format('d/m/Y') }}<br>
+        <strong>Tipo de comprobante:</strong> {{ $model->voucher_type == 1 ? 'Factura' : ($model->voucher_type == 2 ? 'Boleta' : '_')}}<br>
+        <strong>Cliente:</strong> {{ $model->customer->name ?? '_'}}<br>
+        <strong>Almacén:</strong> {{ $model->warehouse->name ?? '_'}}<br>
+        <strong>Observación:</strong> {{ $model->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -87,7 +87,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($sale->product as $i => $products)
+                @foreach ($model->product as $i => $products)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $products->name }}</td>
@@ -102,7 +102,7 @@
     <div class="section"
         style="text-align: right;">
         <strong>
-            Total: ₡ {{ number_format($sale->total, 2) }}
+            Total: ₡ {{ number_format($model->total, 2) }}
         </strong>
     </div>
 </body>

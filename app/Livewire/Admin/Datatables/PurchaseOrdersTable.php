@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class PurchaseOrdersTable extends DataTableComponent
@@ -16,6 +17,11 @@ class PurchaseOrdersTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->setDefaultSort('id', 'desc');
+        $this->setConfigurableAreas([
+            'after-wrapper' => [
+                'admin.pdf-modal-email.modal'
+            ]
+        ]);
     }
 
     //Aplicar filtros a la tabla 
@@ -65,5 +71,43 @@ class PurchaseOrdersTable extends DataTableComponent
     public function builder(): Builder
     {
         return PurchaseOrder::query()->with(['supplier']);
+    }
+
+    public $form = [
+        'open' => false,
+        'document' => '',
+        'client' => '',
+        'email' => '',
+        'model' => null,
+        'view_pdf_patch' => 'admin.purchase-orders.pdf'
+    ];
+
+    //Abrirmodal
+    public function openModal(PurchaseOrder $purchaseOrder)
+    {
+        $this->form['open'] = true;
+        $this->form['document'] = 'Orden de compra ' . $purchaseOrder->serie . ' - ' . $purchaseOrder->correlative;
+        $this->form['client'] = $purchaseOrder->supplier->document_number . ' - ' . $purchaseOrder->supplier->name;
+        $this->form['email'] = $purchaseOrder->supplier->email;
+        $this->form['model'] = $purchaseOrder;
+    }
+
+    //Enviar correo
+    public function sendEmail() {
+        $this->validate([
+            'form.email' => 'required|email'
+        ]);
+
+        //Llamar a un mailable
+        Mail::to($this->form['email'])
+            ->send(new \App\Mail\PdfSend($this->form));
+
+        $this->dispatch('swal', [
+            'icon' => 'success',
+            'title' => 'Correo enviado',
+            'text' => 'El correo electrónico ha sido enviado con exito.'
+        ]);
+
+        $this->reset('form');
     }
 }

@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use App\Models\Quote;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class MovementTable extends DataTableComponent
@@ -18,6 +19,11 @@ class MovementTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->setDefaultSort('id', 'desc');
+        $this->setConfigurableAreas([
+            'after-wrapper' => [
+                'admin.pdf-modal-email.modal'
+            ]
+        ]);
     }
 
     //Aplicar filtros a la tabla 
@@ -76,5 +82,51 @@ class MovementTable extends DataTableComponent
     public function builder(): Builder
     {
         return Movements::query()->with(['warehouse', 'reason']);
+    }
+
+    public $form = [
+        'open' => false,
+        'document' => '',
+        'client' => '',
+        'email' => '',
+        'model' => null,
+        'view_pdf_patch' => 'admin.movements.pdf'
+    ];
+
+    //Abrirmodal
+    public function openModal(Movements $movement)
+    {
+        $movement_type = match ($movement->type) {
+            1 => 'Entrada',
+            2 => 'Salida',
+            default => 'Desconocido'
+        };
+
+        $document_Description = $movement_type . ' ' . $movement->serie . ' - ' . $movement->correlative;
+
+        $this->form['open'] = true;
+        $this->form['document'] = $document_Description;
+        $this->form['client'] = $movement->warehouse->name . ' - ' . $movement->warehouse->location;
+        $this->form['email'] = '';
+        $this->form['model'] = $movement;
+    }
+
+    //Enviar correo
+    public function sendEmail() {
+        $this->validate([
+            'form.email' => 'required|email'
+        ]);
+
+        //Llamar a un mailable
+        Mail::to($this->form['email'])
+            ->send(new \App\Mail\PdfSend($this->form));
+
+        $this->dispatch('swal', [
+            'icon' => 'success',
+            'title' => 'Correo enviado',
+            'text' => 'El correo electrónico ha sido enviado con exito.'
+        ]);
+
+        $this->reset('form');
     }
 }

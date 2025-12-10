@@ -67,11 +67,11 @@
     </style>
 </head>
 <body>
-    <div class="title">Detalle de la orden de compra #{{ $purchaseOrder->serie }}-{{ str_pad($purchaseOrder->correlative, 4, '0', STR_PAD_LEFT) }}</div>
+    <div class="title">Detalle de la orden de compra #{{ $model->serie }}-{{ str_pad($model->correlative, 4, '0', STR_PAD_LEFT) }}</div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($purchaseOrder->date)->format('d/m/Y') }}<br>
-        <strong>Proveedor:</strong> {{ $purchaseOrder->supplier->name ?? '_'}}<br>
-        <strong>Observación:</strong> {{ $purchaseOrder->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($model->date)->format('d/m/Y') }}<br>
+        <strong>Proveedor:</strong> {{ $model->supplier->name ?? '_'}}<br>
+        <strong>Observación:</strong> {{ $model->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -85,7 +85,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($purchaseOrder->product as $i => $products)
+                @foreach ($model->product as $i => $products)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $products->name }}</td>
@@ -100,7 +100,7 @@
     <div class="section"
         style="text-align: right;">
         <strong>
-            Total: ₡ {{ number_format($purchaseOrder->total, 2) }}
+            Total: ₡ {{ number_format($model->total, 2) }}
         </strong>
     </div>
 </body>

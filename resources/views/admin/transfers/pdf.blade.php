@@ -67,12 +67,12 @@
     </style>
 </head>
 <body>
-    <div class="title">Detalle de transferencia #{{ $transfer->serie }}-{{ str_pad($transfer->correlative, 4, '0', STR_PAD_LEFT) }}</div>
+    <div class="title">Detalle de transferencia #{{ $model->serie }}-{{ str_pad($model->correlative, 4, '0', STR_PAD_LEFT) }}</div>
     <div>
-        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($transfer->date)->format('d/m/Y') }}<br>
-        <strong>Almacén de origen:</strong> {{ $transfer->origin_warehouse->name ?? '_'}}<br>
-        <strong>Almacén de destino:</strong> {{ $transfer->destination_warehouse->name ?? '_'}}<br>
-        <strong>Observación:</strong> {{ $transfer->observation ?? '_' }}
+        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($model->date)->format('d/m/Y') }}<br>
+        <strong>Almacén de origen:</strong> {{ $model->origin_warehouse->name ?? '_'}}<br>
+        <strong>Almacén de destino:</strong> {{ $model->destination_warehouse->name ?? '_'}}<br>
+        <strong>Observación:</strong> {{ $model->observation ?? '_' }}
     </div>
     <div class="section">
         <table>
@@ -86,7 +86,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($transfer->product as $i => $products)
+                @foreach ($model->product as $i => $products)
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $products->name }}</td>
@@ -101,7 +101,7 @@
     <div class="section"
         style="text-align: right;">
         <strong>
-            Total: ₡ {{ number_format($transfer->total, 2) }}
+            Total: ₡ {{ number_format($model->total, 2) }}
         </strong>
     </div>
 </body>
