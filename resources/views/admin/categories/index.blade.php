@@ -8,15 +8,23 @@ title="Categorías"
     [
         'name' => 'Categorías'
     ]
-
 ]">
     <x-slot name="action">
         <x-wire-button
-        class="font-semibold" 
-        href="{{ route('admin.categories.create') }}"
-        amber 
-        rounded>
-            Nuevo Categoría
+            class="font-semibold" 
+            href="{{ route('admin.categories.import') }}"
+            sky
+            rounded>
+            <i class="fas fa-file-import"></i>
+            Importar Categorías
+        </x-wire-button>
+        <x-wire-button
+            class="font-semibold" 
+            href="{{ route('admin.categories.create') }}"
+            amber 
+            rounded>
+            <i class="fas fa-plus"></i>
+            Nueva Categoría
         </x-wire-button>
     </x-slot>
     

@@ -31,10 +31,19 @@ title="Almacenes"
 
     <x-slot name="action">
         <x-wire-button
+            class="font-semibold" 
+            href="{{ route('admin.warehouses.import') }}"
+            sky
+            rounded>
+            <i class="fas fa-file-import"></i>
+            Importar Almacenes
+        </x-wire-button>
+        <x-wire-button
         class="font-semibold" 
         href="{{ route('admin.warehouses.create') }}"
         amber 
         rounded>
+        <i class="fas fa-plus"></i>
             Nuevo Almacen
         </x-wire-button>
     </x-slot>

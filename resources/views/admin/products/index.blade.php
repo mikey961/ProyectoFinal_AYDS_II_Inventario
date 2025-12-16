@@ -38,10 +38,19 @@ title="Productos"
 
     <x-slot name="action">
         <x-wire-button
-        class="font-semibold" 
-        href="{{ route('admin.products.create') }}"
-        amber 
-        rounded>
+            class="font-semibold" 
+            href="{{ route('admin.products.import') }}"
+            sky
+            rounded>
+            <i class="fas fa-file-import"></i>
+            Importar Productos
+        </x-wire-button>
+        <x-wire-button
+            class="font-semibold" 
+            href="{{ route('admin.products.create') }}"
+            amber 
+            rounded>
+            <i class="fas fa-plus"></i>
             Nuevo Producto
         </x-wire-button>
     </x-slot>

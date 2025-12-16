@@ -24,6 +24,9 @@ Route::get('/', function(){
 //Ruta de categorías
 Route::resource('categories', CategoryController::class)->except(['show']);
 
+//Ruta para importar categorías
+Route::get('categories/import', [CategoryController::class, 'import'])->name('categories.import');
+
 //Ruta de productos
 Route::resource('products', ProductController::class)->except(['show']);
 
@@ -34,8 +37,14 @@ Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('imag
 //Ruta del Kardex
 Route::get('products/{product}/kardex', [ProductController::class, 'kardex'])->name('products.kardex');
 
+//Ruta para importar productos
+Route::get('products/import', [ProductController::class, 'import'])->name('products.import');
+
 //Ruta de Almacenes
 Route::resource('warehouses', WarehouseController::class)->except('show');
+
+//Ruta para importar almacenes
+Route::get('warehouses/import', [WarehouseController::class, 'import'])->name('warehouses.import');
 
 //{RUTAS DE COMPRAS}
 
