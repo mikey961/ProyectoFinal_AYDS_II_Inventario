@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrdersController;
 use App\Http\Controllers\Admin\QuoteController;
+use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TransferController;
@@ -95,7 +96,13 @@ Route::resource('transfers', TransferController::class)->only(['index', 'create'
 //Ruta para los pdf's de transferencias
 Route::get('transfers/{transfer}/pdf', [TransferController::class, 'pdf'])->name('transfers.pdf');
 
-//Ruta de Transferencias
+//RUTAS PARA REPORTES
+
+//Rutas de productos más vendidos
+Route::get('reports/top-products', [ReportsController::class, 'topProducts'])->name('reports.top-products');
+
+//Ruta de clientes con mas fecuencia
+Route::get('reports/top-customers', [ReportsController::class, 'topCustomers'])->name('reports.top-customers');
 
 //Ruta de usuarios
 

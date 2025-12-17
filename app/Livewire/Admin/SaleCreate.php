@@ -102,7 +102,7 @@ class SaleCreate extends Component
         $this->validate([
             'voucher_type' => 'required|in:1,2',
             'serie' => 'required|string|max:10',
-            'correlative' => 'required|numeric|max:10',
+            'correlative' => 'required|numeric',
             'date' => 'nullable|date',
             'quote_id' => 'nullable|exists:quotes,id',
             'customer_id' => 'required|exists:customers,id',
