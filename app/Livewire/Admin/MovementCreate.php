@@ -113,11 +113,23 @@ class MovementCreate extends Component
             'products.*.price' => 'precio',
         ]);
 
+        $purchase_Date = $this->date;
+        $final_Date = now();
+        if (!empty($purchase_Date)) {
+            try {
+                $carbon_Date = \Carbon\Carbon::parse($purchase_Date);
+                $currentTimeString = now()->format('H:i:s');
+                $final_Date = $carbon_Date->setTimeFromTimeString($currentTimeString);
+            } catch (\Exception $e) {
+                $final_Date = now();
+            }
+        }
+
         $movement = Movements::create([
             'type' => $this->type,
             'serie' => $this->serie,
             'correlative' => $this->correlative,
-            'date' => $this->date ?? now(),
+            'date' => $final_Date,
             'warehouse_id' => $this->warehouse_id,
             'total' => $this->total,
             'observation' => $this->observation,

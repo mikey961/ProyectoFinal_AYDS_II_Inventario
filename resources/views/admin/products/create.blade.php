@@ -40,6 +40,12 @@ title="Nuevo producto"
                 {{ old('description') }}
             </x-wire-textarea>
             <x-wire-input 
+                label="SKU" 
+                name="sku" 
+                placeholder="Ingrese el SKU del producto"
+                value="{{ old('sku') }}"
+            />
+            <x-wire-input 
                 label="Precio" 
                 name="price" 
                 placeholder="Ingrese el precio del producto"

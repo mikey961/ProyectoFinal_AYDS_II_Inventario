@@ -125,11 +125,23 @@ class SaleCreate extends Component
             'products.*.price' => 'precio',
         ]);
 
+        $purchase_Date = $this->date;
+        $final_Date = now();
+        if (!empty($purchase_Date)) {
+            try {
+                $carbon_Date = \Carbon\Carbon::parse($purchase_Date);
+                $currentTimeString = now()->format('H:i:s');
+                $final_Date = $carbon_Date->setTimeFromTimeString($currentTimeString);
+            } catch (\Exception $e) {
+                $final_Date = now();
+            }
+        }
+
         $sale = Sale::create([
             'voucher_type' => $this->voucher_type,
             'serie' => $this->serie,
             'correlative' => $this->correlative,
-            'date' => $this->date ?? now(),
+            'date' => $final_Date,
             'quote_id' => $this->quote_id,
             'customer_id' => $this->customer_id,
             'warehouse_id' => $this->warehouse_id,

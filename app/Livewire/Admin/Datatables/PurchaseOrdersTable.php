@@ -7,11 +7,15 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\PurchaseOrder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class PurchaseOrdersTable extends DataTableComponent
 {
-    //protected $model = PurchaseOrder::class;
+    public function builder(): Builder
+    {
+        return PurchaseOrder::query()->with(['supplier']);
+    }
 
     public function configure(): void
     {
@@ -68,11 +72,6 @@ class PurchaseOrdersTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return PurchaseOrder::query()->with(['supplier']);
-    }
-
     public $form = [
         'open' => false,
         'document' => '',
@@ -109,5 +108,21 @@ class PurchaseOrdersTable extends DataTableComponent
         ]);
 
         $this->reset('form');
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $purchaseOrders = count($selected) ? PurchaseOrder::whereIn('id', $selected)->with(['supplier.identity'])
+            ->get() : PurchaseOrder::with(['supplier.identity'])->get();
+
+        return Excel::download(new \App\Exports\PurchaseOrdersExport($purchaseOrders), 'purchase_orders.xlsx');
     }
 }

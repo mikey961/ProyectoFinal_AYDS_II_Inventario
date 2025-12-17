@@ -105,10 +105,22 @@ class TransferCreate extends Component
             'products.*.price' => 'precio',
         ]);
 
+        $purchase_Date = $this->date;
+        $final_Date = now();
+        if (!empty($purchase_Date)) {
+            try {
+                $carbon_Date = \Carbon\Carbon::parse($purchase_Date);
+                $currentTimeString = now()->format('H:i:s');
+                $final_Date = $carbon_Date->setTimeFromTimeString($currentTimeString);
+            } catch (\Exception $e) {
+                $final_Date = now();
+            }
+        }
+
         $transfer = Transfer::create([
             'serie' => $this->serie,
             'correlative' => $this->correlative,
-            'date' => $this->date ?? now(),
+            'date' => $final_Date,
             'origin_warehouse_id' => $this->origin_warehouse_id,
             'destination_warehouse_id' => $this->destination_warehouse_id,
             'total' => $this->total,

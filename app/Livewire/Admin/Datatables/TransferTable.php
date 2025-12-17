@@ -10,11 +10,15 @@ use App\Models\Quote;
 use App\Models\Transfer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class TransferTable extends DataTableComponent
 {
-    //protected $model = PurchaseOrder::class;
+    public function builder(): Builder
+    {
+        return Transfer::query()->with(['origin_warehouse', 'destination_warehouse']);
+    }
 
     public function configure(): void
     {
@@ -71,11 +75,6 @@ class TransferTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return Transfer::query()->with(['origin_warehouse', 'destination_warehouse']);
-    }
-
     public $form = [
         'open' => false,
         'document' => '',
@@ -112,5 +111,21 @@ class TransferTable extends DataTableComponent
         ]);
 
         $this->reset('form');
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $transfer = count($selected) ? Transfer::whereIn('id', $selected)->with(['origin_warehouse', 'destination_warehouse'])
+            ->get() : Transfer::with(['origin_warehouse', 'destination_warehouse'])->get();
+
+        return Excel::download(new \App\Exports\TransfersExport($transfer), 'transfers.xlsx');
     }
 }

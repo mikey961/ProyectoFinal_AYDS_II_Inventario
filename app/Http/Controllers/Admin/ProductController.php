@@ -37,6 +37,7 @@ class ProductController extends Controller
             'description' => 'nullable|string|max:1000',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'sku' => 'nullable|string|max:50|unique:products,sku|alpha_dash',
         ]);
 
         Product::create($data);

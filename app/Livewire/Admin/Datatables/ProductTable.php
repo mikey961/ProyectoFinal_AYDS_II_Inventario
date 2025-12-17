@@ -9,11 +9,15 @@ use App\Models\Product;
 use BcMath\Number;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 
 class ProductTable extends DataTableComponent
 {
-    //protected $model = Product::class;
+    public function builder(): Builder
+    {
+        return Product::query()->with(['category', 'images']);
+    }
 
     public function configure(): void
     {
@@ -39,6 +43,9 @@ class ProductTable extends DataTableComponent
             Column::make("Nombre", "name")
                 ->searchable()
                 ->sortable(),
+            Column::make("SKU", "sku")
+                ->searchable()
+                ->sortable(),
             Column::make("Categoría", "category.name")
                 ->searchable()
                 ->sortable(),
@@ -60,11 +67,6 @@ class ProductTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return Product::query()->with(['category', 'images']);
-    }
-
     //Propiedades
     public $openModal = false;
     public $inventories = [];
@@ -80,4 +82,19 @@ class ProductTable extends DataTableComponent
             ->with('warehouse')
             ->get();
     }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $products = count($selected) ? Product::whereIn('id', $selected)->get() : Product::all();
+
+        return Excel::download(new \App\Exports\ProductExport($products), 'products.xlsx');
+    }   
 }

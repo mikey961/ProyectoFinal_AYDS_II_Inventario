@@ -8,11 +8,15 @@ use App\Models\PurchaseOrder;
 use App\Models\Quote;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class QuoteTable extends DataTableComponent
 {
-    //protected $model = PurchaseOrder::class;
+    public function builder(): Builder
+    {
+        return Quote::query()->with(['customer']);
+    }
 
     public function configure(): void
     {
@@ -69,11 +73,6 @@ class QuoteTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return Quote::query()->with(['customer']);
-    }
-
     public $form = [
         'open' => false,
         'document' => '',
@@ -110,5 +109,21 @@ class QuoteTable extends DataTableComponent
         ]);
 
         $this->reset('form');
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $quote = count($selected) ? Quote::whereIn('id', $selected)->with(['customer.identity'])
+            ->get() : Quote::with(['customer.identity'])->get();
+
+        return Excel::download(new \App\Exports\QuoteExport($quote), 'quotes.xlsx');
     }
 }

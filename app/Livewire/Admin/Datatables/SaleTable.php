@@ -9,11 +9,15 @@ use App\Models\PurchaseOrder;
 use App\Models\Sale;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class SaleTable extends DataTableComponent
 {
-    //protected $model = Purchase::class;
+    public function builder(): Builder
+    {
+        return Sale::query()->with(['customer']);
+    }
 
     public function configure(): void
     {
@@ -70,11 +74,6 @@ class SaleTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return Sale::query()->with(['customer']);
-    }
-
     public $form = [
         'open' => false,
         'document' => '',
@@ -111,5 +110,21 @@ class SaleTable extends DataTableComponent
         ]);
 
         $this->reset('form');
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $sale = count($selected) ? Sale::whereIn('id', $selected)->with(['customer.identity'])
+            ->get() : Sale::with(['customer.identity'])->get();
+
+        return Excel::download(new \App\Exports\SaleExport($sale), 'sales.xlsx');
     }
 }

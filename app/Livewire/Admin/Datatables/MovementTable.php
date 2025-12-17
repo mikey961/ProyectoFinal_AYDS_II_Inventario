@@ -9,11 +9,15 @@ use App\Models\PurchaseOrder;
 use App\Models\Quote;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
 class MovementTable extends DataTableComponent
 {
-    //protected $model = PurchaseOrder::class;
+    public function builder(): Builder
+    {
+        return Movements::query()->with(['warehouse', 'reason']);
+    }
 
     public function configure(): void
     {
@@ -79,11 +83,6 @@ class MovementTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return Movements::query()->with(['warehouse', 'reason']);
-    }
-
     public $form = [
         'open' => false,
         'document' => '',
@@ -128,5 +127,21 @@ class MovementTable extends DataTableComponent
         ]);
 
         $this->reset('form');
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $movements = count($selected) ? Movements::whereIn('id', $selected)->with(['warehouse', 'reason'])
+            ->get() : Movements::with(['warehouse', 'reason'])->get();
+
+        return Excel::download(new \App\Exports\MovementsExport($movements), 'movements.xlsx');
     }
 }

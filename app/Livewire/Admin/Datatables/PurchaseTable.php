@@ -9,12 +9,16 @@ use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 
 class PurchaseTable extends DataTableComponent
 {
-    //protected $model = Purchase::class;
+    public function builder(): Builder
+    {
+        return Purchase::query()->with(['supplier']);
+    }
 
     public function configure(): void
     {
@@ -84,11 +88,6 @@ class PurchaseTable extends DataTableComponent
         ];
     }
 
-    public function builder(): Builder
-    {
-        return Purchase::query()->with(['supplier']);
-    }
-
     public $form = [
         'open' => false,
         'document' => '',
@@ -125,5 +124,21 @@ class PurchaseTable extends DataTableComponent
         ]);
 
         $this->reset('form');
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'exportSelected' => 'Exportar'
+        ];
+    }
+
+    public function exportSelected()
+    {
+        $selected = $this->getSelected();
+        $purchase = count($selected) ? Purchase::whereIn('id', $selected)->with(['supplier.identity'])
+            ->get() : Purchase::with(['supplier.identity'])->get();
+
+        return Excel::download(new \App\Exports\PurchasesExport($purchase), 'purchases.xlsx');
     }
 }
