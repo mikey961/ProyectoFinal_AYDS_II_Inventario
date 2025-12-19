@@ -68,6 +68,31 @@
         </script>
     @endif
 
+    @push('js')
+        <script>
+            forms = document.querySelectorAll('.delete-form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        'icon' : 'warning',
+                        'title' :'¿Estas seguro?',
+                        'text' : "¡No podrás revertir esto!",
+                        'confirmButtonText' : 'Sí, eliminar',
+                        'confirmButtonColor' : '#3085d6',
+                        'showCancelButton' : true,
+                        'cancelButtonText' : 'Cancelar',
+                        'cancelButtonColor' : '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
+
     @stack('js')
 </body>
 </html>

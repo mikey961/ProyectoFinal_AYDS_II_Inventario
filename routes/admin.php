@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\MovementsController;
 use App\Http\Controllers\Admin\ProductController;
@@ -9,16 +10,16 @@ use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseOrdersController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\ReportsController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TransferController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 //Ruta de dashboard
-Route::get('/', function(){
-    return view('admin.dashboard');
-})->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 // {RUTAS INVENTARIO}
 
@@ -105,12 +106,9 @@ Route::get('reports/top-products', [ReportsController::class, 'topProducts'])->n
 Route::get('reports/top-customers', [ReportsController::class, 'topCustomers'])->name('reports.top-customers');
 
 //Ruta de usuarios
-
+Route::resource('users', UserController::class);
 
 //Ruta de roles 
-
+Route::resource('roles', RoleController::class);
 
 //Ruta de permisos
-
-
-//Ruta de ajustes
